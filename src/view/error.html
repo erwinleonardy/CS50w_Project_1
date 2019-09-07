@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}Book - Error{% endblock %}
+
+{% block body %}
+  <div class="col-lg-5 mx-auto">
+    <h1 class="ml-0">Error</h1>
+    <p class="lead">Oops. {{ message }}</p>
+
+    <p>Click <a HREF="javascript:history.go(-1)">here</a> to go back</p>
+  </div>
+{% endblock %}

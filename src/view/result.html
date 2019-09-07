@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}Book - Result{% endblock %}
+
+{% block body %}
+
+  <div class="col-lg-8 mx-auto">
+    <!-- <h5 class="text-center mt-3"></h5> -->
+		<div class="card my-4">
+			<h5 class="card-header text-center"><i>{{ book.title }}</i></h5>
+			<div class="card-body pt-0">
+        <ul class="list-group list-group-flush">
+
+          <!-- Basic Info-->
+          <li class="list-group-item text-left">
+            <p class="text-center">ISBN   : {{ book.isbn }}</p>
+            <p class="text-center">Author : {{ book.author }}</p>
+            <p class="text-center">Year   : {{ book.yearpublished }} </p>
+            <!-- GoodReads -->
+            {% if rating_count %}
+              <p class="text-center">GoodReads's Rating : {{ avg_rating }} / 5 ({{ rating_count }} votes)</p>
+            {% endif %}
+          </li>
+
+          <!-- Personal Info-->
+          <li class="list-group-item text-left">
+            <!-- Hide the Review Form if there is a review -->
+            {% if not review %}
+            <p>Star Rating: </p>
+            <form action="{{ url_for('result') }}" method="post">
+              <!-- Personal Review -->
+              <fieldset class="rating" {% if review['star'] %} disabled {% endif %}>
+                {% for starRating, starValue, starSize, starTitle in starDesc %}                  
+                  <input type="radio" id="{{starRating}}" name="rating" value="{{starValue}}" {% if review['star'] == starValue %} checked=true {% endif %} />
+                  <label class="{{starSize}}" for="{{starRating}}" title="{{starTitle}}"></label>
+                {% endfor %}
+              </fieldset>
+              <br/><br/>
+
+              <!-- Response Text Area -->
+              <div class="form-group shadow-textarea">
+                <label for="review">Review:</label>
+                <textarea class="form-control z-depth-1" id="review" rows="3" name="review" 
+                          placeholder="Write your review here..." required {% if review %} disabled {% endif %}>{% if review %}{{ review['review'] }}{% endif %}</textarea>     
+              </div>
+              <input type="hidden" name = "search" value = "{{ book.isbn }}"/>
+              <button type="submit" class="btn btn-block btn-secondary mb-3">Submit</button>
+            </form> <!-- END FORM -->
+            <hr>
+            {% endif %}
+
+            <!-- All Reviews -->
+            {% if reviews %} 
+              <h5 class="text-center">All Reviews</h5>
+              <div class="list-group">
+                {% for rev in reviews %}
+                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" onclick="doNothing(event);">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">{{ rev.username }}</h5>
+                      <small>{{ rev.review_timestamp }}</small>
+                    </div>
+                    <small>Rating: {{ rev['star'] }} / 5</small>
+                    <p class="mb-1">{{ rev.review }}</p>
+                  </a>
+                {% endfor %}
+              </div>
+            {% else %} 
+              <p class="text-center">No Reviews. Write one now!</p>
+            {% endif %}
+
+            <!-- Use cached page if there exist, prevent using cached version if there is a review-->
+            <br/>
+            {% if not review %} 
+              <a href="javascript:history.go(-1)"><span>&#8617;</span> Back</a>
+            {% else %}
+              <a href="{{ url_for('results', search=session['query'], page=session['pageNo']) }}"><span>&#8617;</span> Back</a>
+            {% endif %}
+          </li>
+        </ul>
+			</div>
+		</div>
+  </div>
+  
+{% endblock %}

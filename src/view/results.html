@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}Book - Results{% endblock %}
+
+{% block body %}
+
+  <div class="col-lg-8 mx-auto">
+    <h5 class="text-center mt-3">Your search result for <i>'{{ query }}'</i></h5>
+		<div class="card my-4">
+			<h5 class="card-header text-center">{{ pagination.info }}</h5>
+			<div class="card-body pt-0">
+        <ul class="list-group list-group-flush">
+          {% for result in results %}
+            <li class="list-group-item text-left">
+              <a href="{{ url_for('result') }}?search={{ result.isbn }}"><p class="mb-0">{{ result.title }} (ISBN: {{ result.isbn }})</p></a>
+              <small class="text-muted">{{ result.author }} ({{ result.yearpublished }})</small>
+            </li>
+          {% endfor %}
+          {{ pagination.links }}
+          <a href="javascript:history.go(-1)" class="mt-3"><span>&#8617;</span> Back</a>
+        </ul>
+			</div>
+		</div>
+  </div>
+  
+{% endblock %}

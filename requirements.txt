@@ -5,3 +5,4 @@ SQLAlchemy
 tqdm
 flask-paginate
 gunicorn
+flask_login

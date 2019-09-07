@@ -6,3 +6,4 @@ tqdm
 flask-paginate
 gunicorn
 flask_login
+requests

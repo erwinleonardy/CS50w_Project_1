@@ -1,9 +1,8 @@
 # CS50w - Project 1
+#### By: Erwin Leonardy
 
 Web Programming with Python and JavaScript 
 (https://cs50x-erwin-books.herokuapp.com)
-
-By: Erwin Leonardy
 
 This mini project comprises of a lookup feature for a book based on the ibsn / book title / book author given.
 
